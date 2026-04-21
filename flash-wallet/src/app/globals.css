@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --flash-blue: #1B4FE8;
+  --flash-blue-dark: #1340C5;
+  --flash-blue-light: #3D6BFF;
+  --flash-white: #FFFFFF;
+  --flash-gray: #F5F7FF;
+  --flash-dark: #0D1B3E;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #F5F7FF;
+  color: #0D1B3E;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-flash-blue hover:bg-flash-blue-dark text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-200 shadow-flash hover:shadow-flash-lg active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-flash-blue-50 hover:bg-flash-blue-100 text-flash-blue font-semibold py-3 px-6 rounded-2xl transition-all duration-200;
+  }
+
+  .btn-outline {
+    @apply border-2 border-flash-blue text-flash-blue hover:bg-flash-blue hover:text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-3xl shadow-card p-4 sm:p-6;
+  }
+
+  .input-field {
+    @apply w-full bg-flash-gray border border-flash-gray-border rounded-2xl px-4 py-3 font-poppins text-flash-dark placeholder-flash-gray-text focus:outline-none focus:border-flash-blue focus:ring-2 focus:ring-flash-blue-100 transition-all duration-200;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-flash-dark mb-1;
+  }
+
+  .badge-success {
+    @apply inline-flex items-center gap-1 bg-green-50 text-flash-success text-xs font-semibold px-3 py-1 rounded-full;
+  }
+
+  .badge-warning {
+    @apply inline-flex items-center gap-1 bg-yellow-50 text-flash-warning text-xs font-semibold px-3 py-1 rounded-full;
+  }
+
+  .badge-danger {
+    @apply inline-flex items-center gap-1 bg-red-50 text-flash-danger text-xs font-semibold px-3 py-1 rounded-full;
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, #1B4FE8 0%, #3D6BFF 100%);
+  }
+
+  .page-title {
+    @apply text-2xl font-bold text-flash-dark;
+  }
+
+  .section-title {
+    @apply text-lg font-semibold text-flash-dark;
+  }
+
+  .text-muted {
+    @apply text-flash-gray-text text-sm;
+  }
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F7FF;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4DEFF;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1B4FE8;
+}
