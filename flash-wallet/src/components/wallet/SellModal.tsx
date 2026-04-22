@@ -94,7 +94,7 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
         provider: PROVIDER_API_MAP[provider],
       };
 
-      console.log("📤 Sell payload:", payload);
+      console.log(" Sell payload:", payload);
 
       const res = await transactionsApi.sell(payload as any);
 
