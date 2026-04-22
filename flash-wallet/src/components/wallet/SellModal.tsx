@@ -94,14 +94,14 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
         provider: PROVIDER_API_MAP[provider],
       };
 
-      console.log("📤 Sell payload:", payload);
+      console.log(" Sell payload:", payload);
 
       const res = await transactionsApi.sell(payload as any);
 
       if (res.success) {
         // La facture peut être dans res.invoice ou res.transaction.payment_url (si LNURL)
         // Mais pour Polar, on attend un bolt11 dans res.invoice ou res.payment_request
-        const paymentReq = res.invoice || res.payment_request || res.data?.payment_request;
+        const paymentReq = res.invoice || res.payment_request || (res.data as any)?.payment_request;
         
         if (paymentReq) {
           setInvoice(paymentReq);

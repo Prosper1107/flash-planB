@@ -9,6 +9,7 @@ import {
   SellSatsPayload,
   BuySatsPayload,
   TransactionsResponse,
+  User,
 } from "@/types";
 
 // ============================================================
