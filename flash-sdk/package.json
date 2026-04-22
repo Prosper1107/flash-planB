@@ -1,0 +1,27 @@
+{
+  "name": "flash-pay-sdk",
+  "version": "1.0.0",
+  "description": "Flash Pay SDK - Accept Bitcoin Lightning payments on your website. Built for West Africa (Benin, Togo, Cote d'Ivoire). Supports MTN MoMo, Moov Money, Celtiis, Togocel.",
+  "main": "flash-sdk.js",
+  "files": [
+    "flash-sdk.js",
+    "examples/",
+    "README.md"
+  ],
+  "keywords": [
+    "bitcoin", "lightning", "lightning-network", "lightning-address",
+    "mobile-money", "payments", "west-africa", "flash", "sdk",
+    "mtn-momo", "moov-money", "celtiis", "togocel", "fcfa", "xof",
+    "benin", "togo", "cote-d-ivoire", "francophone"
+  ],
+  "author": "DEGUE N'singnon Benoit Prosper",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Prosper1107/flash-planB"
+  },
+  "homepage": "https://bitcoinflash.xyz",
+  "bugs": {
+    "url": "https://github.com/Prosper1107/flash-planB/issues"
+  }
+}
