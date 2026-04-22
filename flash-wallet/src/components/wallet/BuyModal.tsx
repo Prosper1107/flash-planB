@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingCart, CheckCircle, Smartphone, ExternalLink, Loader2, ChevronDown, Globe } from "lucide-react";
 import { MobileMoneyProvider, MOBILE_MONEY_PROVIDERS, SUPPORTED_COUNTRIES } from "@/types";
 import { transactionsApi } from "@/lib/api/client";
@@ -92,7 +93,7 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
         receiver_address: user?.tag ? `${user.tag}@bitcoinflash.xyz` : "",
       };
 
-      console.log("📤 Buy payload:", payload);
+      console.log(" Buy payload:", payload);
 
       const res = await transactionsApi.buy(payload as any);
 
@@ -109,15 +110,15 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
         // Afficher l'erreur détaillée du serveur
         const detail = res.errors ? Object.values(res.errors).flat().join(", ") : "";
         const msg = `${res.message}${detail ? " : " + detail : ""}`;
-        console.warn("⚠️ API returned error:", msg);
+        console.warn(" API returned error:", msg);
         toast.error(msg);
       }
     } catch (err: any) {
-      console.error("❌ Buy API error:", err.response?.data || err.message);
+      console.error(" Buy API error:", err.response?.data || err.message);
 
       // ─── SIMULATION DE SUCCÈS (Staging/Démo) ─────────────────
       // L'API staging peut échouer, on simule le succès pour la démo
-      console.warn("🔄 Simulation du succès pour la démo...");
+      console.warn(" Simulation du succès pour la démo...");
 
       toast.loading("Traitement en cours (Simulation)...", { id: "sim-buy" });
 
@@ -133,10 +134,20 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-white rounded-[32px] w-full max-w-md overflow-hidden shadow-2xl animate-in fade-in zoom-in slide-in-from-bottom-4 duration-300">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm"
+    >
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="bg-white rounded-3xl sm:rounded-[32px] w-full max-w-[440px] overflow-hidden shadow-2xl max-h-[95vh] overflow-y-auto"
+      >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-flash-gray-border">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-flash-gray-border">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center">
               <ShoppingCart className="w-5 h-5" />
@@ -151,7 +162,7 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
           {!paymentUrl ? (
             <>
               {/* Montant */}
@@ -183,7 +194,7 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
                   <button
                     type="button"
                     onClick={() => setShowCountryPicker(!showCountryPicker)}
-                    className="w-full bg-flash-gray rounded-2xl px-5 py-4 flex items-center justify-between hover:bg-gray-100 transition-all border-2 border-transparent focus:border-flash-blue"
+                    className="w-full bg-flash-gray rounded-2xl px-4 py-2.5 sm:px-5 sm:py-4 flex items-center justify-between hover:bg-gray-100 transition-all border-2 border-transparent focus:border-flash-blue"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{currentCountry.flag}</span>
@@ -231,7 +242,7 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
                       <button
                         key={key}
                         onClick={() => setProvider(key)}
-                        className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all ${
+                        className={`flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl border-2 transition-all ${
                           provider === key 
                             ? "border-flash-blue bg-flash-blue/5 shadow-sm" 
                             : "border-transparent bg-flash-gray hover:bg-gray-100"
@@ -255,7 +266,7 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
                 <label className="label">Numéro Mobile Money</label>
                 <div className="flex items-center bg-flash-gray rounded-2xl overflow-hidden border-2 border-transparent focus-within:border-flash-blue transition-all">
                   {/* Badge du code pays (non éditable) */}
-                  <div className="flex items-center gap-1.5 text-flash-blue font-bold text-sm px-3 py-3 bg-flash-blue/10 select-none flex-shrink-0">
+                  <div className="flex items-center gap-1.5 text-flash-blue font-bold text-sm px-2.5 py-2.5 sm:px-3 sm:py-3 bg-flash-blue/10 select-none flex-shrink-0">
                     <span className="text-base">{currentCountry.flag}</span>
                     <span>{currentCountry.prefix}</span>
                   </div>
@@ -268,7 +279,7 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
                       setPhone(val);
                     }}
                     placeholder="97 12 34 56"
-                    className="flex-1 min-w-0 bg-transparent border-none outline-none px-3 py-3 text-base font-semibold tracking-wider"
+                    className="flex-1 min-w-0 bg-transparent border-none outline-none px-2.5 py-2.5 sm:px-3 sm:py-3 text-base font-semibold tracking-wider"
                   />
                 </div>
                 <p className="text-[11px] text-flash-gray-text ml-1">
@@ -289,7 +300,7 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
               </button>
             </>
           ) : (
-            <div className="text-center space-y-6 py-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="text-center space-y-4 sm:space-y-6 py-2 sm:py-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="w-20 h-20 bg-blue-100 text-flash-blue rounded-full flex items-center justify-center mx-auto mb-4">
                 <ExternalLink className="w-10 h-10" />
               </div>
@@ -331,7 +342,7 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
             Propulsé par Flash &amp; FedaPay
           </p>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
