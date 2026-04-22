@@ -62,7 +62,6 @@ Claude (claude-sonnet-4-6, interface web claude.ai) a ete utilise comme assistan
 - Validation manuelle des flux Mobile Money sur les reseaux reels (MTN MoMo Benin, Moov Money).
 - Deploiement de l'application sur Vercel et configuration des variables d'environnement de production.
 - Configuration et gestion du noeud LND Polar en environnement local.
-- Preparation de la soutenance et de la video de presentation.
 
 ---
 

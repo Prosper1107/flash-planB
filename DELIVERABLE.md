@@ -10,7 +10,8 @@
 |-----------|------|
 | Depot GitHub (Open Source) | https://github.com/Prosper1107/flash-planB |
 | Demo live Flash Wallet | https://flash-wallet-one.vercel.app |
-| Video de presentation | A ajouter avant la soumission finale |
+| Demo exemple Flash SDK | prosper1107.github.io/flash-planB/flash-sdk/examples |
+| Video de presentation | https://www.youtube.com/watch?v=G2Cjf0EQjfY |
 
 ---
 
@@ -127,16 +128,3 @@ flash-planB/
     - index.html        Page de demonstration et documentation interactive
   - package.json
 ```
-
----
-
-## Checklist de soumission
-
-- [x] Depot GitHub public (Open Source, licence MIT)
-- [x] README.md racine complet : perimetre, architecture, stack, installation, contribution
-- [x] README.md par composant : flash-wallet et flash-sdk documentes separement
-- [x] CLAUDE.md : documentation de l'usage de l'IA et des competences deployees
-- [x] DELIVERABLE.md : centralisation de tous les liens et ressources
-- [x] Demo live Flash Wallet deployee sur Vercel
-- [x] Configuration Polar documentee pour les tests Lightning locaux
-- [ ] Video de presentation (a enregistrer)
