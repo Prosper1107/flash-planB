@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight, CheckCircle, Zap, Copy, Loader2, ChevronDown, Globe } from "lucide-react";
 import { MobileMoneyProvider, MOBILE_MONEY_PROVIDERS, SUPPORTED_COUNTRIES } from "@/types";
 import { transactionsApi, lndApi } from "@/lib/api/client";
@@ -118,10 +119,10 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
       }
     } catch (err: any) {
       const apiError = err.response?.data?.message || err.message || "Échec de la connexion";
-      console.error("❌ Sell API error:", err.response?.data || err.message);
+      console.error(" Sell API error:", err.response?.data || err.message);
       
       // ─── SIMULATION DE SUCCÈS (Staging/Démo) ─────────────────
-      console.warn("🔄 Simulation du succès pour la démo...");
+      console.warn(" Simulation du succès pour la démo...");
       toast.loading("Traitement en cours (Simulation)...", { id: "sim-sell" });
 
       setTimeout(() => {
@@ -167,10 +168,20 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-[32px] w-full max-w-md shadow-2xl animate-in fade-in zoom-in slide-in-from-bottom-4 duration-300">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
+    >
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="bg-white rounded-3xl sm:rounded-[32px] w-full max-w-[440px] shadow-2xl max-h-[95vh] overflow-y-auto"
+      >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-flash-gray-border">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-flash-gray-border">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-flash-blue-50 text-flash-blue rounded-2xl flex items-center justify-center">
               <ArrowUpRight className="w-5 h-5" />
@@ -186,7 +197,7 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
         </div>
 
         {/* Body */}
-        <div className="p-6 space-y-5">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
           {!invoice ? (
             <>
               {/* Montant */}
@@ -217,7 +228,7 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
                   <button
                     type="button"
                     onClick={() => setShowCountryPicker(!showCountryPicker)}
-                    className="w-full bg-flash-gray rounded-2xl px-5 py-3.5 flex items-center justify-between hover:bg-gray-100 transition-all border-2 border-transparent focus:border-flash-blue"
+                    className="w-full bg-flash-gray rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3.5 flex items-center justify-between hover:bg-gray-100 transition-all border-2 border-transparent focus:border-flash-blue"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{currentCountry.flag}</span>
@@ -264,7 +275,7 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
                       <button
                         key={key}
                         onClick={() => setProvider(key)}
-                        className={`p-3 rounded-2xl border-2 text-left transition-all ${
+                        className={`p-2.5 sm:p-3 rounded-2xl border-2 text-left transition-all ${
                           provider === key
                             ? "border-flash-blue bg-flash-blue-50"
                             : "border-flash-gray-border bg-flash-gray hover:border-flash-blue-100"
@@ -284,7 +295,7 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
               <div>
                 <label className="label">Numéro Mobile Money</label>
                 <div className="flex items-center bg-flash-gray rounded-2xl overflow-hidden border-2 border-transparent focus-within:border-flash-blue transition-all">
-                  <div className="flex items-center gap-1.5 text-flash-blue font-bold text-sm px-3 py-3 bg-flash-blue/10 select-none flex-shrink-0">
+                  <div className="flex items-center gap-1.5 text-flash-blue font-bold text-sm px-2.5 py-2.5 sm:px-3 sm:py-3 bg-flash-blue/10 select-none flex-shrink-0">
                     <span className="text-base">{currentCountry.flag}</span>
                     <span>{currentCountry.prefix}</span>
                   </div>
@@ -295,7 +306,7 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
                       setPhone(val);
                     }}
                     placeholder="97 12 34 56"
-                    className="flex-1 min-w-0 bg-transparent border-none outline-none px-3 py-3 text-base font-semibold tracking-wider"
+                    className="flex-1 min-w-0 bg-transparent border-none outline-none px-2.5 py-2.5 sm:px-3 sm:py-3 text-base font-semibold tracking-wider"
                     type="tel"
                   />
                 </div>
@@ -321,7 +332,7 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
               </button>
             </>
           ) : (
-            <div className="flex flex-col items-center space-y-6 py-2">
+            <div className="flex flex-col items-center space-y-4 sm:space-y-6 py-2">
               <div className="bg-flash-gray p-4 rounded-3xl">
                 <QRCodeSVG 
                   value={invoice} 
@@ -376,7 +387,7 @@ export function SellModal({ onClose, onSuccess, ratePerSat = 0 }: SellModalProps
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
