@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flash Pay SDK - Guide d'integration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --blue: #1B4FE8;
+      --blue-dark: #0D37B8;
+      --blue-bg: #f0f4ff;
+      --blue-50: #eff3ff;
+      --gray-bg: #f5f7ff;
+      --gray-bdr: #e5e8f5;
+      --text: #111827;
+      --text-soft: #6b7280;
+      --white: #ffffff;
+      --green: #10b981;
+      --radius: 20px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--gray-bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ---- Navigation ---- */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-bdr);
+      padding: 14px 24px;
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 17px;
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .nav-logo {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-badge {
+      background: var(--blue-bg);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-link:hover {
+      color: var(--blue);
+    }
+
+    /* ---- Layout ---- */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ---- Hero ---- */
+    .hero {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 30px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 span {
+      color: var(--blue);
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--text-soft);
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .hero-link--primary {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(27, 79, 232, 0.28);
+    }
+
+    .hero-link--primary:hover {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+    }
+
+    .hero-link--secondary {
+      background: var(--white);
+      color: var(--blue);
+      border: 2px solid var(--gray-bdr);
+    }
+
+    .hero-link--secondary:hover {
+      border-color: var(--blue);
+      background: var(--blue-50);
+    }
+
+    /* ---- Section ---- */
+    section {
+      margin-bottom: 40px;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+
+    section h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .section-sub {
+      font-size: 14px;
+      color: var(--text-soft);
+      margin-bottom: 24px;
+    }
+
+    /* ---- Card ---- */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--gray-bdr);
+      margin-bottom: 16px;
+    }
+
+    /* ---- Etapes ---- */
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-num {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .step-content h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 12px;
+    }
+
+    /* ---- Blocs de code ---- */
+    .code {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 14px;
+      padding: 20px 22px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .code .c-comment {
+      color: #585b70;
+    }
+
+    .code .c-string {
+      color: #a6e3a1;
+    }
+
+    .code .c-key {
+      color: #cba6f7;
+    }
+
+    .code .c-func {
+      color: #89b4fa;
+    }
+
+    .code .c-num {
+      color: #fab387;
+    }
+
+    .code .c-tag {
+      color: #f38ba8;
+    }
+
+    .code .c-attr {
+      color: #89dceb;
+    }
+
+    /* ---- Zone de demo ---- */
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .demo-cell {
+      background: var(--gray-bg);
+      border: 2px dashed var(--gray-bdr);
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    .demo-cell-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .demo-hint {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 10px;
+    }
+
+    .demo-cta {
+      background: var(--gray-bg);
+      border: 2px dashed var(--gray-bdr);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .demo-cta:hover {
+      border-color: var(--blue);
+    }
+
+    .demo-cta-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .demo-cta-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    /* ---- Tableau API ---- */
+    .api-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .api-table th {
+      text-align: left;
+      padding: 10px 12px;
+      background: var(--gray-bg);
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-soft);
+    }
+
+    .api-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--gray-bdr);
+      vertical-align: top;
+    }
+
+    .api-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .api-table code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--blue-bg);
+      color: var(--blue);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .badge-req {
+      display: inline-block;
+      background: #fee2e2;
+      color: #dc2626;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-left: 6px;
+    }
+
+    .badge-opt {
+      display: inline-block;
+      background: #d1fae5;
+      color: #059669;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-left: 6px;
+    }
+
+    /* ---- Grille operateurs ---- */
+    .op-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .op-card {
+      background: var(--gray-bg);
+      border: 1.5px solid var(--gray-bdr);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .op-card-name {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .op-card-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--blue);
+    }
+
+    .op-card-pays {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    /* ---- Alerte ---- */
+    .alert {
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .alert--info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .alert--warn {
+      background: #fefce8;
+      border: 1px solid #fde047;
+      color: #854d0e;
+    }
+
+    /* ---- Pied de page ---- */
+    footer {
+      text-align: center;
+      padding: 32px 0;
+      border-top: 1px solid var(--gray-bdr);
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    footer a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .nav-inner {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-brand" href="#">
+        <div class="nav-logo">
+          <svg viewBox="0 0 24 24">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+        </div>
+        Flash Pay SDK
+      </a>
+      <span class="nav-badge">v1.0.0</span>
+      <a class="nav-link" href="#integration">Integration</a>
+      <a class="nav-link" href="#demo">Demo</a>
+      <a class="nav-link" href="#api-reference">Reference API</a>
+      <a class="nav-link" href="https://docs.bitcoinflash.xyz" target="_blank" rel="noopener">Documentation</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+         Business Integration
+      </div>
+      <h1>Integrez <span>Flash Pay</span><br>en 3 lignes de code</h1>
+      <p>
+        Le SDK JavaScript pour accepter des paiements Bitcoin Lightning sur votre site web.
+        Concu pour les marchands en Afrique de l'Ouest francophone (Benin, Togo, Cote d'Ivoire).
+      </p>
+      <div class="hero-links">
+        <a href="#demo" class="hero-link hero-link--primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Voir la demo
+        </a>
+        <a href="https://github.com/Prosper1107/flash-planB" target="_blank" rel="noopener"
+          class="hero-link hero-link--secondary">
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <!-- Integration rapide -->
+    <section id="integration">
+      <div class="section-label">Demarrage rapide</div>
+      <h2>Installation en 3 etapes</h2>
+      <p class="section-sub">Aucune dependance externe. Un seul fichier JavaScript suffit.</p>
+
+      <div class="card">
+        <!-- Etape 1 -->
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Ajouter le script dans votre page HTML</h3>
+            <p>Copiez cette ligne avant la fermeture de votre balise &lt;/body&gt;</p>
+            <div class="code">
+              <span class="c-tag">&lt;script</span> <span class="c-attr">src</span>=<span
+                class="c-string">"flash-sdk.js"</span><span class="c-tag">&gt;&lt;/script&gt;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Etape 2 -->
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Initialiser le SDK avec votre tag Flash</h3>
+            <p>Remplacez <code
+                style="font-family:monospace;background:#f0f4ff;color:#1B4FE8;padding:2px 6px;border-radius:6px;">votre-tag</code>
+              par le tag de votre compte Flash</p>
+            <div class="code">
+              <span class="c-func">FlashPay</span>.<span class="c-func">init</span>({
+              <span class="c-key">merchantTag</span>: <span class="c-string">'votre-tag'</span>,
+              <span class="c-key">onSuccess</span>: <span class="c-key">function</span>(payment) {
+              console.<span class="c-func">log</span>(<span class="c-string">'Paiement recu'</span>, payment);
+              <span class="c-comment">// Declenchez votre logique metier ici</span>
+              },
+              <span class="c-key">onError</span>: <span class="c-key">function</span>(err) {
+              console.<span class="c-func">error</span>(<span class="c-string">'Erreur paiement'</span>, err);
+              }
+              });
+            </div>
+          </div>
+        </div>
+
+        <!-- Etape 3 -->
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Inserer un bouton de paiement</h3>
+            <p>Ajoutez un conteneur vide dans votre HTML, le SDK cree le bouton automatiquement</p>
+            <div class="code">
+              <span class="c-comment">&lt;!-- Dans votre HTML --&gt;</span>
+              <span class="c-tag">&lt;div</span> <span class="c-attr">id</span>=<span
+                class="c-string">"pay-btn"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+
+              <span class="c-comment">&lt;!-- Dans votre JavaScript --&gt;</span>
+              <span class="c-func">FlashPay</span>.<span class="c-func">button</span>(<span
+                class="c-string">'#pay-btn'</span>, {
+              <span class="c-key">amount</span>: <span class="c-num">5000</span>,
+              <span class="c-key">currency</span>: <span class="c-string">'XOF'</span>,
+              <span class="c-key">description</span>: <span class="c-string">'Commande #123'</span>
+              });
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo live -->
+    <section id="demo">
+      <div class="section-label">Demo interactive</div>
+      <h2>Testez le flux de paiement</h2>
+      <p class="section-sub">Cliquez sur un bouton pour ouvrir le modal de paiement Flash.</p>
+
+      <div class="alert alert--warn">
+        Mode demonstration : les paiements sont simules. Aucune transaction reelle n'est effectuee.
+      </div>
+
+      <div class="card">
+        <div class="demo-grid">
+          <div class="demo-cell">
+            <div class="demo-cell-label">Bouton standard</div>
+            <div id="demo-1"></div>
+            <div class="demo-hint">size: 'md' - 5 000 FCFA</div>
+          </div>
+          <div class="demo-cell">
+            <div class="demo-cell-label">Bouton compact</div>
+            <div id="demo-2"></div>
+            <div class="demo-hint">size: 'sm' - 2 000 FCFA</div>
+          </div>
+          <div class="demo-cell">
+            <div class="demo-cell-label">Bouton large</div>
+            <div id="demo-3"></div>
+            <div class="demo-hint">size: 'lg' - 25 000 FCFA</div>
+          </div>
+          <div class="demo-cell">
+            <div class="demo-cell-label">Variante outline</div>
+            <div id="demo-4"></div>
+            <div class="demo-hint">variant: 'outline' - Don 10 000 FCFA</div>
+          </div>
+        </div>
+
+        <div class="demo-cta" id="demo-programmatic">
+          <div class="demo-cta-text">Ouvrir le checkout programmatiquement</div>
+          <div class="demo-cta-sub">FlashPay.checkout({ amount: 15000, description: 'Abonnement Premium' })</div>
+        </div>
+      </div>
+
+      <!-- Checkout Mobile Money -->
+      <div class="card" style="margin-top:16px;">
+        <h2 style="font-size:18px;margin-bottom:4px;">Checkout avec Mobile Money</h2>
+        <p class="section-sub">Testez le flux complet avec selection d'operateur</p>
+        <div class="code" style="margin-bottom:20px;">
+          <span class="c-func">FlashPay</span>.<span class="c-func">checkout</span>({
+          <span class="c-key">amount</span>: <span class="c-num">8000</span>,
+          <span class="c-key">description</span>: <span class="c-string">'Abonnement Flash Pro'</span>,
+          <span class="c-key">onSuccess</span>: <span class="c-key">function</span>(payment) {
+          console.<span class="c-func">log</span>(<span class="c-string">'Transaction confirmee'</span>, payment);
+          }
+          });
+        </div>
+        <div class="demo-cta" id="demo-momo">
+          <div class="demo-cta-text">Tester avec onglet Mobile Money</div>
+          <div class="demo-cta-sub">Selectionnez votre pays, votre operateur et entrez un numero de test</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Checkout programmatique -->
+    <section>
+      <div class="section-label">API avancee</div>
+      <h2>Checkout programmatique</h2>
+      <p class="section-sub">Ouvrez le modal depuis n'importe quel evenement de votre application.</p>
+
+      <div class="card">
+        <div class="code">
+          <span class="c-comment">// Ouvrir le modal et conserver une reference</span>
+          <span class="c-key">const</span> modal = <span class="c-func">FlashPay</span>.<span
+            class="c-func">checkout</span>({
+          <span class="c-key">amount</span>: <span class="c-num">15000</span>,
+          <span class="c-key">description</span>: <span class="c-string">'Abonnement Premium'</span>,
+          <span class="c-key">onSuccess</span>: <span class="c-key">function</span>(payment) {
+          console.<span class="c-func">log</span>(<span class="c-string">'Paiement recu'</span>, payment.amount,
+          payment.sats);
+          <span class="c-comment">// payment.amount → montant XOF</span>
+          <span class="c-comment">// payment.sats → satoshis correspondants</span>
+          <span class="c-comment">// payment.lightningAddress → adresse Lightning du marchand</span>
+          <span class="c-comment">// payment.timestamp → ISO 8601</span>
+          <span class="c-comment">// payment.status → "simulated" | "completed"</span>
+          },
+          <span class="c-key">onClose</span>: <span class="c-key">function</span>() {
+          console.<span class="c-func">log</span>(<span class="c-string">'Modal ferme par l\'utilisateur'</span>);
+          }
+          });
+
+          <span class="c-comment">// Fermer le modal depuis votre code</span>
+          modal.<span class="c-func">close</span>();
+        </div>
+      </div>
+    </section>
+
+    <!-- Utilitaires -->
+    <section>
+      <div class="section-label">Utilitaires</div>
+      <h2>Fonctions de conversion et formatage</h2>
+      <p class="section-sub">Outils inclus dans le SDK pour faciliter vos calculs.</p>
+
+      <div class="card">
+        <div class="code">
+          <span class="c-comment">// Obtenir la Lightning Address du marchand</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">getLightningAddress</span>();
+          <span class="c-comment">// → "votre-tag@bitcoinflash.xyz"</span>
+
+          <span class="c-comment">// Convertir XOF en satoshis</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">xofToSats</span>(<span class="c-num">5000</span>);
+          <span class="c-comment">// → 13157 (avec ratePerSat = 0.38)</span>
+
+          <span class="c-comment">// Convertir satoshis en XOF</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">satsToXof</span>(<span class="c-num">10000</span>);
+          <span class="c-comment">// → 3800</span>
+
+          <span class="c-comment">// Formater un montant XOF en texte lisible</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">formatXof</span>(<span class="c-num">5000</span>);
+          <span class="c-comment">// → "5 000 XOF"</span>
+
+          <span class="c-comment">// Formater des satoshis en texte lisible</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">formatSats</span>(<span
+            class="c-num">1500000</span>);
+          <span class="c-comment">// → "1.50M sats"</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- API REST -->
+    <section>
+      <div class="section-label">Appels API directs</div>
+      <h2>Methodes API Flash</h2>
+      <p class="section-sub">
+        Ces methodes communiquent directement avec l'API Flash.
+        Elles necessitent un token JWT ou un X-Staging-User-Id dans la configuration.
+      </p>
+
+      <div class="card">
+        <div class="code">
+          <span class="c-comment">// Configuration avec authentification</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">init</span>({
+          <span class="c-key">merchantTag</span>: <span class="c-string">'votre-tag'</span>,
+          <span class="c-key">token</span>: <span class="c-string">'votre_jwt_token'</span>,
+          <span class="c-comment">// OU en staging :</span>
+          <span class="c-key">stagingUserId</span>: <span class="c-string">'votre_staging_user_id'</span>,
+          });
+
+          <span class="c-comment">// Creer une transaction de vente (sats → Mobile Money)</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">createTransaction</span>({
+          <span class="c-key">type</span>: <span class="c-string">'SELL_BITCOIN'</span>,
+          <span class="c-key">amount</span>: <span class="c-num">13157</span>, <span class="c-comment">//
+            satoshis</span>
+          <span class="c-key">number</span>: <span class="c-string">'+22997000000'</span>, <span class="c-comment">//
+            numero avec indicatif</span>
+          <span class="c-key">provider</span>: <span class="c-string">'MTN_OPEN'</span>, <span class="c-comment">// voir
+            tableau operateurs</span>
+          }).<span class="c-func">then</span>(<span class="c-key">function</span>(data) {
+          console.<span class="c-func">log</span>(<span class="c-string">'Transaction'</span>, data);
+          });
+
+          <span class="c-comment">// Recuperer les transactions</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">getTransactions</span>().<span
+            class="c-func">then</span>(<span class="c-key">function</span>(data) {
+          console.<span class="c-func">log</span>(data.transactions);
+          });
+
+          <span class="c-comment">// Recuperer la balance</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">getBalance</span>().<span
+            class="c-func">then</span>(<span class="c-key">function</span>(data) {
+          console.<span class="c-func">log</span>(data);
+          });
+
+          <span class="c-comment">// Recuperer le taux de change depuis l'API</span>
+          <span class="c-func">FlashPay</span>.<span class="c-func">getRate</span>().<span
+            class="c-func">then</span>(<span class="c-key">function</span>(data) {
+          <span class="c-func">FlashPay</span>.<span class="c-func">setRate</span>(data.rate_per_sat);
+          });
+        </div>
+      </div>
+    </section>
+
+    <!-- Reference API -->
+    <section id="api-reference">
+      <div class="section-label">Reference</div>
+      <h2>Configuration FlashPay.init()</h2>
+      <p class="section-sub">Parametres acceptes par la methode d'initialisation.</p>
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Parametre</th>
+              <th>Type</th>
+              <th>Defaut</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>merchantTag</code> <span class="badge-req">Requis</span></td>
+              <td><code>string</code></td>
+              <td>-</td>
+              <td>Tag Flash du marchand. Genere l'adresse <code>tag@bitcoinflash.xyz</code></td>
+            </tr>
+            <tr>
+              <td><code>apiBase</code> <span class="badge-opt">Optionnel</span></td>
+              <td><code>string</code></td>
+              <td><code>staging.bitcoinflash.xyz</code></td>
+              <td>URL de base de l'API Flash</td>
+            </tr>
+            <tr>
+              <td><code>token</code> <span class="badge-opt">Optionnel</span></td>
+              <td><code>string</code></td>
+              <td>-</td>
+              <td>JWT Bearer token pour les requetes authentifiees</td>
+            </tr>
+            <tr>
+              <td><code>stagingUserId</code> <span class="badge-opt">Optionnel</span></td>
+              <td><code>string</code></td>
+              <td>-</td>
+              <td>Header X-Staging-User-Id pour l'environnement de staging</td>
+            </tr>
+            <tr>
+              <td><code>ratePerSat</code> <span class="badge-opt">Optionnel</span></td>
+              <td><code>number</code></td>
+              <td><code>0.38</code></td>
+              <td>Taux XOF par satoshi utilise pour les conversions</td>
+            </tr>
+            <tr>
+              <td><code>onSuccess</code> <span class="badge-opt">Optionnel</span></td>
+              <td><code>function</code></td>
+              <td>-</td>
+              <td>Callback <code>(payment) => void</code> appele apres paiement confirme</td>
+            </tr>
+            <tr>
+              <td><code>onError</code> <span class="badge-opt">Optionnel</span></td>
+              <td><code>string</code></td>
+              <td>-</td>
+              <td>Callback <code>(error) => void</code> appele en cas d'echec</td>
+            </tr>
+            <tr>
+              <td><code>onClose</code> <span class="badge-opt">Optionnel</span></td>
+              <td><code>function</code></td>
+              <td>-</td>
+              <td>Callback <code>() => void</code> appele a la fermeture du modal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Operateurs -->
+    <section>
+      <div class="section-label">Reference</div>
+      <h2>Operateurs Mobile Money supportes</h2>
+      <p class="section-sub">Utilisez l'identifiant API dans <code
+          style="font-family:monospace;background:#f0f4ff;color:#1B4FE8;padding:2px 6px;border-radius:6px;">createTransaction({ provider: ... })</code>
+      </p>
+
+      <div class="op-grid">
+        <div class="op-card">
+          <div class="op-card-name">MTN MoMo</div>
+          <div class="op-card-id">MTN_OPEN</div>
+          <div class="op-card-pays">Benin, Togo</div>
+        </div>
+        <div class="op-card">
+          <div class="op-card-name">Moov Money</div>
+          <div class="op-card-id">MOOV_BENIN</div>
+          <div class="op-card-pays">Benin, Togo, Cote d'Ivoire</div>
+        </div>
+        <div class="op-card">
+          <div class="op-card-name">Celtiis</div>
+          <div class="op-card-id">CELTIIS_BENIN</div>
+          <div class="op-card-pays">Benin</div>
+        </div>
+        <div class="op-card">
+          <div class="op-card-name">Togocel</div>
+          <div class="op-card-id">MTN_TOGO</div>
+          <div class="op-card-pays">Togo</div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /container -->
+
+  <footer>
+    <p>Flash Pay SDK v1.0.0 - <a href="https://bitcoinflash.xyz" target="_blank" rel="noopener">bitcoinflash.xyz</a></p>
+    <p style="margin-top:6px;">Open Source</p>
+  </footer>
+
+  <!-- Chargement du SDK -->
+  <script src="../flash-sdk.js"></script>
+  <script>
+    // Initialisation du SDK pour la demo
+    FlashPay.init({
+      merchantTag: 'demo-shop',
+      onSuccess: function (payment) {
+        console.log('[FlashPay] Paiement confirme', payment);
+      },
+      onError: function (err) {
+        console.error('[FlashPay] Erreur', err);
+      },
+      onClose: function () {
+        console.log('[FlashPay] Modal ferme');
+      }
+    });
+
+    // Demo 1 : bouton standard
+    FlashPay.button('#demo-1', {
+      amount: 5000,
+      description: 'T-shirt Flash'
+    });
+
+    // Demo 2 : bouton compact
+    FlashPay.button('#demo-2', {
+      amount: 2000,
+      description: 'Cafe Bitcoin',
+      size: 'sm'
+    });
+
+    // Demo 3 : bouton large
+    FlashPay.button('#demo-3', {
+      amount: 25000,
+      description: 'Abonnement Flash Pro',
+      size: 'lg'
+    });
+
+    // Demo 4 : variante outline
+    FlashPay.button('#demo-4', {
+      amount: 10000,
+      description: 'Don au projet Flash',
+      variant: 'outline',
+      label: 'Faire un don'
+    });
+
+    // Demo checkout programmatique
+    document.getElementById('demo-programmatic').addEventListener('click', function () {
+      FlashPay.checkout({
+        amount: 15000,
+        description: 'Abonnement Premium',
+        onSuccess: function (payment) {
+          console.log('Succes :', payment.sats + ' sats');
+        }
+      });
+    });
+
+    // Demo Mobile Money
+    document.getElementById('demo-momo').addEventListener('click', function () {
+      FlashPay.checkout({
+        amount: 8000,
+        description: 'Abonnement Flash Pro'
+      });
+    });
+  </script>
+
+</body>
+
+</html>
+</script>
+
+</body>
+
+</html>
