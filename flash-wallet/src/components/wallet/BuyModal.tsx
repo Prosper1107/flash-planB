@@ -336,12 +336,6 @@ export function BuyModal({ onClose, onSuccess, ratePerSat = 0.38 }: BuyModalProp
             </div>
           )}
         </div>
-
-        <div className="p-4 bg-flash-gray text-center">
-          <p className="text-[10px] text-flash-gray-text uppercase font-bold tracking-wider">
-            Propulsé par Flash &amp; FedaPay
-          </p>
-        </div>
       </motion.div>
     </motion.div>
   );
