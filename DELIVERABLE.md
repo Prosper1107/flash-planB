@@ -11,7 +11,7 @@
 | Depot GitHub (Open Source) | https://github.com/Prosper1107/flash-planB |
 | Demo live Flash Wallet | https://flash-wallet-one.vercel.app |
 | Demo exemple Flash SDK | prosper1107.github.io/flash-planB/flash-sdk/examples |
-| Video de presentation | https://www.youtube.com/watch?v=G2Cjf0EQjfY |
+| Video de presentation | https://drive.google.com/file/d/1V1THnbNIrHTTNJRtVobuoZCbsx7cr-S9/view |
 
 ---
 
